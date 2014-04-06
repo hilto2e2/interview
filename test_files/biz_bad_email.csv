@@ -1,0 +1,10 @@
+Name,Address,City,State,Zip,Phone,Fax,Email
+Freemont Construction,1000 South Main Street #101,Salt Lake City,UT,84101,801-555-7212,801-555-7213,good@mail.com
+Fake_Company,,,,,,,connect@ec-construction
+Fake_Company2,,,,,,,@ec-construction.com
+Fake_Company3,,,,,,,connect@
+Fake_Company4,,,,,,,connectec-construction.com
+Fake_Company5,,,,,,,connect@.com
+Fake_Company6,,,,,,,connect@mail..com
+Fake_Company7,,,,,,,connect.me@com
+Fake_Company8,,,,,,,connect\@mail.com

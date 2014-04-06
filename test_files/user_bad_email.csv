@@ -1,0 +1,10 @@
+Name,Email,Phone,Title,BusinessName
+Bob,bob@mail.com,,,Freemont Construction
+Fred,bod@mail,,,Freemont Construction
+Joe,@mail.com,,,Freemont Construction
+Bob,bob@,,,Freemont Construction
+Dave,bobmail.com,,,Freemont Construction
+Gill,bob@.com,,,Freemont Construction
+Jeff,bob@mail..com,,,Freemont Construction
+Jay,bob.me@com,,,Freemont Construction
+Judd,bob\@mail.com,,,Freemont Construction
