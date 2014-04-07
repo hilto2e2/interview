@@ -25,6 +25,8 @@ class Tester
     test_business_arrays()
     test_same_email_user()
     test_invalid_emails()
+    test_nil_records()
+    test_invalid_csv()
     test_interview_csv()
     print_results()
   end
@@ -146,6 +148,58 @@ private
   #############################################################
   # Tests with the interview csv files
   #############################################################
+  def test_nil_records
+    user_csv     = "test_files/user_nil.csv" 
+    business_csv = "test_files/biz_nil.csv" 
+
+    filter = RecordFilter.new
+    filter.create(user_csv, business_csv)
+    filter.calc_stats()
+    #filter.output
+    
+    ## Test Nil Records
+    if (filter.well_formed_rec_cnt == 0 && filter.malformed_rec_cnt == 18 &&
+        filter.biz_rec_cnt == 0 && filter.user_rec_cnt == 0 && filter.total_rec_cnt == 18 &&
+        filter.bad_business_records.length == 9 && 
+        filter.bad_business_records[0].malformed_message[0] == "ERROR: INVALID NAME" &&
+        filter.bad_business_records[0].malformed_message[1] == "ERROR: INVALID EMAIL" &&
+        filter.bad_user_records.length == 9 &&
+        filter.bad_user_records[0].malformed_message[0] == "ERROR: INVALID EMAIL" &&
+        filter.bad_user_records[0].malformed_message[1] == "ERROR: INVALID NAME" &&
+        filter.bad_user_records[0].malformed_message[2] == "ERROR: INVALID BUSINESS NAME")
+      @test_passed = @test_passed + 1
+    else
+      @test_failed = @test_failed + 1
+      puts "Nil Test Failed"
+    end
+  end
+
+  #############################################################
+  # Test Invalid CSV files
+  #############################################################
+  def test_invalid_csv
+    user_csv     = "test_files/user_invalid.csv" 
+    business_csv = "test_files/biz_invalid.csv" 
+
+    filter = RecordFilter.new
+    filter.create(user_csv, business_csv)
+    filter.calc_stats()
+    #filter.output
+    
+    ## Test invalid CSV
+    if (filter.well_formed_rec_cnt == 6 && filter.malformed_rec_cnt == 10 &&
+        filter.biz_rec_cnt == 3 && filter.user_rec_cnt == 0 && filter.total_rec_cnt == 16)
+      @test_passed = @test_passed + 1
+    else
+      @test_failed = @test_failed + 1
+      puts "Invalid CSV Test Failed"
+    end
+  end
+
+  
+  #############################################################
+  # Tests with the interview csv files
+  #############################################################
   def test_interview_csv
     user_csv     = "test_files/users.csv" 
     business_csv = "test_files/businesses.csv" 
@@ -155,14 +209,20 @@ private
     filter.calc_stats()
     #filter.output
     
-    ## Test User Invalid Emails
+    ## Test Interview CSV Files
     if (filter.well_formed_rec_cnt == 11 && filter.malformed_rec_cnt == 5 &&
-        filter.biz_rec_cnt == 3 && filter.user_rec_cnt == 6 && filter.total_rec_cnt == 16)
+        filter.biz_rec_cnt == 3 && filter.user_rec_cnt == 6 && filter.total_rec_cnt == 16 &&
+        filter.bad_user_records[0].malformed_message[0] == "ERROR: INVALID BUSINESS NAME" &&
+        filter.bad_user_records[1].malformed_message[0] == "ERROR: INVALID EMAIL" &&
+        filter.bad_user_records[2].malformed_message[0] == "ERROR: COMPANY NAME DOESN'T EXIST" &&
+        filter.bad_business_records[0].malformed_message[0] == "ERROR: INVALID NAME" &&
+        filter.bad_business_records[1].malformed_message[0] == "ERROR: INVALID EMAIL")
       @test_passed = @test_passed + 1
     else
       @test_failed = @test_failed + 1
       puts "Interview Test Failed"
     end
   end
+  
   
 end

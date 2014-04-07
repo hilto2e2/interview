@@ -23,9 +23,10 @@ class Record
     index   = 0
     
     @row.each do |field|
-      clean_field = field.strip if !field.nil?
-
-      @fields[@header[index].downcase.strip] = clean_field
+      if (!field.nil? && !@header[index].nil?)
+	clean_field = field.strip
+	@fields[@header[index].downcase.strip] = clean_field
+      end
       index = index + 1
     end
   end

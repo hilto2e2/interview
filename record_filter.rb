@@ -115,15 +115,24 @@ private
   #############################################################
   def remove_bad_business_records(records)
     records.each do |rec|
+      malformed_found = false
       if (rec.fields["name"].nil?)
 	rec.is_malformed = true
 	rec.add_malformed_message("ERROR: INVALID NAME")
 	@bad_business_records << rec
-      elsif (!rec.fields["email"].nil? && VALID_EMAIL_REGEX.match(rec.fields["email"]).nil?)
+	malformed_found = true
+      end
+      
+      if (!rec.fields["email"].nil? && VALID_EMAIL_REGEX.match(rec.fields["email"]).nil?)
 	rec.is_malformed = true
 	rec.add_malformed_message("ERROR: INVALID EMAIL")
-	@bad_business_records << rec
-      else
+	if (!malformed_found)
+	  @bad_business_records << rec
+	  malformed_found = true
+	end
+      end
+      
+      if (!rec.is_malformed)
 	@good_business_records << rec
       end
     end
@@ -136,21 +145,36 @@ private
   # to a malformed list.
   #############################################################
   def remove_bad_user_records(records)
+    
     records.each do |rec|
+      malformed_found = false
       if (VALID_EMAIL_REGEX.match(rec.fields["email"]).nil?)
 	rec.is_malformed = true
 	rec.add_malformed_message("ERROR: INVALID EMAIL")
 	@bad_user_records << rec
-      elsif (rec.fields["name"].nil?)
+	malformed_found = true
+      end
+      
+      if (rec.fields["name"].nil?)
 	rec.is_malformed = true
 	rec.add_malformed_message("ERROR: INVALID NAME")
-	@bad_user_records << rec
-      elsif (rec.fields["businessname"].nil?)
+	if (!malformed_found)
+	  @bad_user_records << rec
+	  malformed_found = true
+	end
+      end
+      
+      if (rec.fields["businessname"].nil?)
 	rec.is_malformed = true
 	rec.add_malformed_message("ERROR: INVALID BUSINESS NAME")
-	@bad_user_records << rec
-      else
+	if (!malformed_found)
+	  @bad_user_records << rec
+	end
+      end
+      
+      if (!rec.is_malformed)
 	@good_user_records << rec
+	malformed_found = true
       end
     end
   end
